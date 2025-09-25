@@ -1,10 +1,14 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import TaskDetail from './components/TaskDetail.vue';
+
 </script>
 
 <template>
   <div>
-    <h1 class="bg-red-500">Vite + Vue</h1>
+    <h1 class="text-2xl p-8 text-blue-900 font-bold">Task Manager</h1>
+
+    <TaskDetail />
+
 
   </div>
 
