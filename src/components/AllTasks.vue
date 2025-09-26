@@ -4,7 +4,7 @@
       <Dropdown v-model="category_id" :options="categoryOptions" optionLabel="label" optionValue="value" placeholder="Category" class="w-40" />
       <button class="bg-blue-900 text-white px-4 py-1 rounded-full hover:bg-blue-600"><i class="pi pi-plus"> </i></button>
     </div>
-    <TaskCard v-for="task in data" :key="task.id" :task="task" class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white"  />
+    <TaskCard v-for="task in data" :key="task.id" :task="task" class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white" @delete-task="deleteTask" />
     <Paginator :rows="limit" :totalRecords="totalRecords" :first="offset" @page="onPage" :rowsPerPageOptions="[10,20,50]" class="mt-4" />
   </div>
 </template>
@@ -58,10 +58,19 @@ async function loadTasks() {
       // 'order=created_at.desc'
     ].join('&')
     const response = await apiFetch(`tasks?${params}`)
-    data.value = response.data || response // handle both array and {data:[]} shape
-    totalRecords.value = response.count || 100 // fallback if count not provided
+    data.value = response.data || response 
+    totalRecords.value = response.count || 100 
   } catch (err) {
     error.value = err.message || "Failed to load tasks"
+  }
+}
+
+async function deleteTask(taskId) {
+  try {
+    await apiFetch(`tasks?id=eq.${taskId}`, { method: 'DELETE' })
+    await loadTasks()
+  } catch (err) {
+    error.value = err.message || 'Failed to delete task'
   }
 }
 

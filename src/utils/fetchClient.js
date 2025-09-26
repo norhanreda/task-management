@@ -37,6 +37,11 @@ export async function apiFetch(endpoint, options = {}) {
       }
     }
 
+    if (response.status === 204) {
+  return { success: true }
+}
+
+
     return await response.json()
   } catch (error) {
     console.error("API Error:", error)
