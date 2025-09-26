@@ -196,7 +196,7 @@ async function editTask(values) {
     const body = {
       title: values.title,
       description: values.description,
-      priority: values.priority, // use string directly
+      priority: values.priority, 
       due_date: values.due_date,
       completed: values.completed,
       image_url: values.image_url,
