@@ -1,36 +1,219 @@
-<script setup>
-import { ref } from "vue";
-// const count = ref(0);
-</script>
-
 <template>
   <h1
     class="flex items-center justify-center text-2xl p-8 text-blue-900 font-bold"
   >
     Task Detail
   </h1>
-  <div class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto">
-    <h2 class="text-2xl p-8 text-blue-900 font-boldd">Title</h2>
+  <div
+    v-if="task"
+    class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto"
+  >
+    <button
+      @click="goBack"
+      class="cursor-pointer mb-4 self-start flex items-center gap-2 text-blue-700 hover:text-blue-900"
+    >
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <button
+      @click="openEditDialog"
+      class="self-end mb-2 px-4 py-1 rounded bg-blue-800 text-white hover:bg-blue-600"
+    >
+      Edit
+    </button>
+    <h2 class="text-2xl p-8 text-blue-900 font-bold">{{ task.title }}</h2>
     <div class="flex flex-col items-center justify-center">
-      <img
-        class="mx-auto"
-        src="data:image/jpeg;base64,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"
-      />
-
-      <p class="text-center mt-6">
-        test plapla test plapla test plapla test plapla test plapla test plapla
-        test plapla test plaplatest plapla
-      </p>
-    </div>
-    <div class="flex flex-col p-6">
-      <span>Due Date </span> <input type="date" />
+      <img v-if="task.image_url" class="mx-auto" :src="task.image_url" />
+      <p class="text-center mt-6">{{ task.description }}</p>
     </div>
 
-    <div class="flex justify-around p-8 gap-12">
-      <button class="bg-blue-100 w-1/2 h-10 cursor-pointer">Save</button>
-      <button class="bg-blue-100 w-1/2 h-10 cursor-pointer">Cancel</button>
+     
+ 
+    <div class="flex flex-wrap gap-4 mb-2 mt-4">
+      <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
+        >Priority: {{ task.priority }}</span
+      >
+      <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs"
+        >Completed: {{ task.completed ? "Yes" : "No" }}</span
+      >
+       <span class="px-2 py-1  bg-yellow-100 text-yellow-800 rounded text-xs">Due Date: {{ task.due_date }}</span>
     </div>
+    <Dialog
+      v-model:visible="showEditDialog"
+      modal
+      header="Edit Task"
+      :style="{ width: '400px' }"
+    >
+      <Form
+        :validation-schema="taskSchema"
+        :initial-values="editTaskData"
+        @submit="editTask"
+      >
+        <div class="flex flex-col gap-3">
+          <Field name="title" v-slot="{ field, errorMessage }">
+            <input
+              v-bind="field"
+              class="border rounded p-2"
+              placeholder="Title"
+            />
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+          <Field name="description" v-slot="{ field, errorMessage }">
+            <textarea
+              v-bind="field"
+              class="border rounded p-2"
+              placeholder="Description"
+            ></textarea>
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+          <Field name="priority" v-slot="{ field, errorMessage }">
+            <Dropdown
+              v-bind="field"
+              :options="priorityOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Priority"
+              class="w-full"
+            />
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+          <Field name="due_date" v-slot="{ field, errorMessage }">
+            <input
+              v-bind="field"
+              type="date"
+              class="border rounded p-2"
+              placeholder="Due Date"
+            />
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+          <Field name="completed" v-slot="{ field, errorMessage }">
+            <select v-bind="field" class="border rounded p-2">
+              <option :value="true">Completed</option>
+              <option :value="false">Not Completed</option>
+            </select>
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+          <Field name="image_url" v-slot="{ field, errorMessage }">
+            <input
+              v-bind="field"
+              class="border rounded p-2"
+              placeholder="Image URL"
+            />
+            <span class="text-red-600 text-xs">{{ errorMessage }}</span>
+          </Field>
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <button
+            type="button"
+            class="px-4 py-1 rounded bg-gray-200"
+            @click="showEditDialog = false"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-1 rounded bg-blue-900 text-white hover:bg-blue-600"
+          >
+            Save
+          </button>
+        </div>
+      </Form>
+    </Dialog>
   </div>
+  <div v-else-if="error" class="text-red-600 text-center mt-8">{{ error }}</div>
+  <div v-else class="text-center mt-8">Loading...</div>
 </template>
+<script setup>
+import { onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { apiFetch } from "../utils/fetchClient";
+import Dialog from "primevue/dialog";
+import Dropdown from "primevue/dropdown";
+import { Form, Field } from "vee-validate";
+import * as yup from "yup";
 
+const route = useRoute();
+const router = useRouter();
+
+const task = ref(null);
+const error = ref(null);
+const showEditDialog = ref(false);
+const editTaskData = ref({
+  title: "",
+  description: "",
+  priority: "",
+  due_date: "",
+  completed: false,
+  image_url: "",
+});
+const priorityOptions = [
+  { label: "Low", value: "low" },
+  { label: "Medium", value: "medium" },
+  { label: "High", value: "high" },
+];
+const taskSchema = yup.object({
+  title: yup
+    .string()
+    .required("Title is required")
+    .max(255, "Max 255 characters"),
+  description: yup.string().nullable(),
+
+  due_date: yup
+    .string()
+    .required("Due date is required")
+    .matches(/^[\d]{4}-[\d]{2}-[\d]{2}$/, "Invalid date format"),
+  completed: yup.boolean().required("Completed is required"),
+  image_url: yup.string().max(500, "Max 500 characters").nullable(),
+});
+
+async function fetchTask() {
+  try {
+    const response = await apiFetch(`tasks?id=eq.${route.params.id}`);
+    task.value = (response.data || response)[0] || null;
+  } catch (err) {
+    error.value = err.message || "Failed to load task";
+  }
+}
+
+onMounted(fetchTask);
+
+function goBack() {
+  router.back();
+}
+
+function openEditDialog() {
+  if (task.value) {
+    editTaskData.value = {
+      title: task.value.title,
+      description: task.value.description,
+      priority: task.value.priority ? task.value.priority.toLowerCase() : "",
+      due_date: task.value.due_date,
+      completed: Boolean(task.value.completed),
+      image_url: task.value.image_url,
+    };
+  }
+  showEditDialog.value = true;
+}
+
+async function editTask(values) {
+  console.log("Form Values:", values);
+  try {
+    const body = {
+      title: values.title,
+      description: values.description,
+      priority: values.priority.value, // use string directly
+      due_date: values.due_date,
+      completed: values.completed,
+      image_url: values.image_url,
+    };
+    await apiFetch(`tasks?id=eq.${route.params.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+    await fetchTask();
+    showEditDialog.value = false;
+  } catch (err) {
+    error.value = err.message || "Failed to update task";
+  }
+}
+</script>
 <style scoped></style>

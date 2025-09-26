@@ -17,7 +17,7 @@ const props = defineProps({
         <i class="pi pi-trash" style="font-size: 1.3em;"></i>
       </button>
     </div>
-    <img v-if="props.task.image_url" :src="props.task.image_url" class="w-full max-h-60 object-cover rounded mb-4 mt-6" />
+    <!-- <img v-if="props.task.image_url" :src="props.task.image_url" class="w-full max-h-60 object-cover rounded mb-4 mt-6" /> -->
     <p class="mb-2 text-gray-700">{{ props.task.description }}</p>
     <div class="flex flex-wrap gap-4 mb-2">
       <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">Priority: {{ props.task.priority }}</span>

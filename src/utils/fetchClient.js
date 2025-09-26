@@ -38,11 +38,15 @@ export async function apiFetch(endpoint, options = {}) {
     }
 
     if (response.status === 204) {
-  return { success: true }
-}
+      return { success: true }
+    }
 
-
-    return await response.json()
+    // Handle 201 or 200 with empty body
+    const text = await response.text();
+    if (!text) {
+      return { success: true }
+    }
+    return JSON.parse(text);
   } catch (error) {
     console.error("API Error:", error)
     throw error
