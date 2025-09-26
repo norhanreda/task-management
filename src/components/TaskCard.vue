@@ -1,5 +1,4 @@
 <script setup>
-// Accept a single prop 'task' which is an object containing all task data
 const props = defineProps({
   task: {
     type: Object,

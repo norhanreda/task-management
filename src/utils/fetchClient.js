@@ -21,7 +21,7 @@ export async function apiFetch(endpoint, options = {}) {
       ...options.headers,
     }
 
-    // Always prepend BASE_URL (no condition)
+ 
     const url = `${BASE_URL}${endpoint}`
 
     const response = await fetch(url, {
