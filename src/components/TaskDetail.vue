@@ -26,8 +26,6 @@
       <p class="text-center mt-6">{{ task.description }}</p>
     </div>
 
-     
- 
     <div class="flex flex-wrap gap-4 mb-2 mt-4">
       <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
         >Priority: {{ task.priority }}</span
@@ -35,7 +33,9 @@
       <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs"
         >Completed: {{ task.completed ? "Yes" : "No" }}</span
       >
-       <span class="px-2 py-1  bg-yellow-100 text-yellow-800 rounded text-xs">Due Date: {{ task.due_date }}</span>
+      <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs"
+        >Due Date: {{ task.due_date }}</span
+      >
     </div>
     <Dialog
       v-model:visible="showEditDialog"
@@ -65,12 +65,11 @@
             ></textarea>
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
-          <Field name="priority" v-slot="{ field, errorMessage }">
+          <Field name="priority" v-slot="{ field, errorMessage, handleChange }">
             <Dropdown
-              v-bind="field"
+              :modelValue="field.value"
+              @update:modelValue="handleChange($event)"
               :options="priorityOptions"
-              optionLabel="label"
-              optionValue="value"
               placeholder="Priority"
               class="w-full"
             />
@@ -145,11 +144,8 @@ const editTaskData = ref({
   completed: false,
   image_url: "",
 });
-const priorityOptions = [
-  { label: "Low", value: "low" },
-  { label: "Medium", value: "medium" },
-  { label: "High", value: "high" },
-];
+const priorityOptions = ["low", "medium", "high"];
+
 const taskSchema = yup.object({
   title: yup
     .string()
@@ -200,7 +196,7 @@ async function editTask(values) {
     const body = {
       title: values.title,
       description: values.description,
-      priority: values.priority.value, // use string directly
+      priority: values.priority, // use string directly
       due_date: values.due_date,
       completed: values.completed,
       image_url: values.image_url,
