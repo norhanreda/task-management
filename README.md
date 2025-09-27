@@ -80,5 +80,24 @@ State is managed locally within components using Vue's `ref` and `reactive` APIs
 
 - https://task-management-sepia-five.vercel.app/
 
+## Screenshots of key screens
+<img width="1578" height="870" alt="image" src="https://github.com/user-attachments/assets/1715764e-cacd-4944-be37-05200e3fe470" />
+
+<img width="1530" height="835" alt="image" src="https://github.com/user-attachments/assets/ac506223-8dda-44dc-a08e-6a4649eaf6be" />
+
+<img width="397" height="786" alt="image" src="https://github.com/user-attachments/assets/ed653ede-5298-4287-a3c0-79a894665de9" />
+
+<img width="395" height="771" alt="image" src="https://github.com/user-attachments/assets/bf1635b0-dd67-4327-98b5-b0ed50e671c0" />
+
+<img width="1317" height="782" alt="image" src="https://github.com/user-attachments/assets/86c4d3e7-6c6b-4a92-a672-16c8245a2692" />
+
+
+
+
+
+
+
+
+
 
 
