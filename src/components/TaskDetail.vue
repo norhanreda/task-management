@@ -32,16 +32,24 @@
         :class="{
           'bg-red-100 text-red-800': task.priority === 'high',
           'bg-yellow-100 text-yellow-800': task.priority === 'medium',
-          'bg-green-100 text-green-800': task.priority === 'low'
+          'bg-green-100 text-green-800': task.priority === 'low',
         }"
       >
         Priority: {{ task.priority }}
       </span>
-      <span class="px-2 py-1 rounded-full text-xs"
-        :class="task.completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-      >Completed: {{ task.completed ? "Yes" : "No" }}</span>
+      <span
+        class="px-2 py-1 rounded-full text-xs"
+        :class="
+          task.completed
+            ? 'bg-green-100 text-green-800'
+            : 'bg-red-100 text-red-800'
+        "
+        >Completed: {{ task.completed ? "Yes" : "No" }}</span
+      >
       <div class="flex items-center gap-2">
-        <label for="completed-switch" class="text-xs font-semibold">Toggle Completed:</label>
+        <label for="completed-switch" class="text-xs font-semibold"
+          >Toggle Completed:</label
+        >
         <InputSwitch
           id="completed-switch"
           :modelValue="task.completed"
@@ -49,7 +57,8 @@
         />
       </div>
       <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs"
-        >Due Date: {{ task.due_date }}</span>
+        >Due Date: {{ task.due_date }}</span
+      >
     </div>
     <Dialog
       v-model:visible="showEditDialog"
@@ -74,7 +83,9 @@
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="description" v-slot="{ field, errorMessage }">
-            <label class="font-semibold mb-0.5 block" for="description">Description</label>
+            <label class="font-semibold mb-0.5 block" for="description"
+              >Description</label
+            >
             <textarea
               v-bind="field"
               id="description"
@@ -84,7 +95,9 @@
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="priority" v-slot="{ field, errorMessage, handleChange }">
-            <label class="font-semibold mb-0.5 block" for="priority">Priority</label>
+            <label class="font-semibold mb-0.5 block" for="priority"
+              >Priority</label
+            >
             <Dropdown
               :modelValue="field.value"
               @update:modelValue="handleChange($event)"
@@ -96,7 +109,9 @@
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="due_date" v-slot="{ field, errorMessage }">
-            <label class="font-semibold mb-0.5 block" for="due_date">Due Date</label>
+            <label class="font-semibold mb-0.5 block" for="due_date"
+              >Due Date</label
+            >
             <input
               v-bind="field"
               id="due_date"
@@ -106,8 +121,13 @@
             />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
-          <Field name="completed" v-slot="{ field, errorMessage, handleChange }">
-            <label class="font-semibold mb-0.5 block" for="completed">Completed</label>
+          <Field
+            name="completed"
+            v-slot="{ field, errorMessage, handleChange }"
+          >
+            <label class="font-semibold mb-0.5 block" for="completed"
+              >Completed</label
+            >
             <InputSwitch
               :modelValue="field.value"
               @update:modelValue="handleChange($event)"
@@ -117,7 +137,9 @@
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="image_url" v-slot="{ field, errorMessage }">
-            <label class="font-semibold mb-0.5 block" for="image_url">Image URL</label>
+            <label class="font-semibold mb-0.5 block" for="image_url"
+              >Image URL</label
+            >
             <input
               v-bind="field"
               id="image_url"
@@ -149,15 +171,12 @@
   <div v-else class="text-center mt-8">Loading...</div>
 </template>
 <script setup>
-
-import InputSwitch from "primevue/inputswitch";
-
-
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { apiFetch } from "../utils/fetchClient";
 import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
+import InputSwitch from "primevue/inputswitch";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 
@@ -227,10 +246,13 @@ async function editTask(values) {
     const body = {};
     if (values.title !== undefined) body.title = values.title;
     if (values.description !== undefined) body.description = values.description;
-    if (values.priority !== undefined && values.priority !== "") body.priority = values.priority;
-    if (values.due_date !== undefined && values.due_date !== "") body.due_date = values.due_date;
+    if (values.priority !== undefined && values.priority !== "")
+      body.priority = values.priority;
+    if (values.due_date !== undefined && values.due_date !== "")
+      body.due_date = values.due_date;
     if (values.completed !== undefined) body.completed = values.completed;
-    if (values.image_url !== undefined && values.image_url !== "") body.image_url = values.image_url;
+    if (values.image_url !== undefined && values.image_url !== "")
+      body.image_url = values.image_url;
     await apiFetch(`tasks?id=eq.${route.params.id}`, {
       method: "PATCH",
       body: JSON.stringify(body),
@@ -246,7 +268,7 @@ function toggleCompletedSwitch(val) {
   if (!task.value) return;
   apiFetch(`tasks?id=eq.${route.params.id}`, {
     method: "PATCH",
-    body: JSON.stringify({ completed: val })
+    body: JSON.stringify({ completed: val }),
   }).then(fetchTask);
 }
 </script>
