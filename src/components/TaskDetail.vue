@@ -173,7 +173,7 @@ const taskSchema = yup.object({
 
   due_date: yup
     .string()
-    .required("Due date is required")
+    .nullable()
     .matches(/^[\d]{4}-[\d]{2}-[\d]{2}$/, "Invalid date format"),
   completed: yup.boolean().required("Completed is required"),
   image_url: yup.string().max(500, "Max 500 characters").nullable(),
@@ -211,14 +211,13 @@ function openEditDialog() {
 async function editTask(values) {
   console.log("Form Values:", values);
   try {
-    const body = {
-      title: values.title,
-      description: values.description,
-      priority: values.priority, 
-      due_date: values.due_date,
-      completed: values.completed,
-      image_url: values.image_url,
-    };
+    const body = {};
+    if (values.title !== undefined) body.title = values.title;
+    if (values.description !== undefined) body.description = values.description;
+    if (values.priority !== undefined && values.priority !== "") body.priority = values.priority;
+    if (values.due_date !== undefined && values.due_date !== "") body.due_date = values.due_date;
+    if (values.completed !== undefined) body.completed = values.completed;
+    if (values.image_url !== undefined && values.image_url !== "") body.image_url = values.image_url;
     await apiFetch(`tasks?id=eq.${route.params.id}`, {
       method: "PATCH",
       body: JSON.stringify(body),
