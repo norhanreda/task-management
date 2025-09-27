@@ -11,13 +11,15 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 - Pagination for task list
 - Add/Edit dialogs with robust form validation
 - Toggle completed state with InputSwitch
+- Loading spinners for data fetching (PrimeVue ProgressSpinner)
+- Toast notifications for user feedback (PrimeVue Toast)
 - API calls separated into service files for clean architecture
 
 ## Tech Stack
 
 - Vue 3 with `<script setup>` composition API
 - Vite for fast development
-- PrimeVue for UI components (Dialog, Dropdown, Paginator, InputSwitch)
+- PrimeVue for UI components (Dialog, Dropdown, Paginator, InputSwitch, Toast, ProgressSpinner)
 - vee-validate and Yup for form validation
 - Tailwind CSS for styling
 - API calls via custom `fetchClient` utility
