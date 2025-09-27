@@ -138,7 +138,7 @@
       :totalRecords="totalRecords"
       :first="offset"
       @page="onPage"
-      :rowsPerPageOptions="[10, 20, 50]"
+      :rowsPerPageOptions="[5, 10, 20]"
       class="mt-4"
     />
   </div>
