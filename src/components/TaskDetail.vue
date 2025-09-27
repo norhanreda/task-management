@@ -37,12 +37,19 @@
       >
         Priority: {{ task.priority }}
       </span>
-      <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"
-          :class="task.completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-        >Completed: {{ task.completed ? "Yes" : "No" }}</span>
+      <span class="px-2 py-1 rounded-full text-xs"
+        :class="task.completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+      >Completed: {{ task.completed ? "Yes" : "No" }}</span>
+      <div class="flex items-center gap-2">
+        <label for="completed-switch" class="text-xs font-semibold">Toggle Completed:</label>
+        <InputSwitch
+          id="completed-switch"
+          :modelValue="task.completed"
+          @update:modelValue="toggleCompletedSwitch"
+        />
+      </div>
       <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs"
-        >Due Date: {{ task.due_date }}</span
-      >
+        >Due Date: {{ task.due_date }}</span>
     </div>
     <Dialog
       v-model:visible="showEditDialog"
@@ -99,12 +106,14 @@
             />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
-          <Field name="completed" v-slot="{ field, errorMessage }">
+          <Field name="completed" v-slot="{ field, errorMessage, handleChange }">
             <label class="font-semibold mb-0.5 block" for="completed">Completed</label>
-            <select v-bind="field" id="completed" class="border rounded p-2">
-              <option :value="true">Completed</option>
-              <option :value="false">Not Completed</option>
-            </select>
+            <InputSwitch
+              :modelValue="field.value"
+              @update:modelValue="handleChange($event)"
+              id="completed"
+              class="mb-2"
+            />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="image_url" v-slot="{ field, errorMessage }">
@@ -140,6 +149,10 @@
   <div v-else class="text-center mt-8">Loading...</div>
 </template>
 <script setup>
+
+import InputSwitch from "primevue/inputswitch";
+
+
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { apiFetch } from "../utils/fetchClient";
@@ -227,6 +240,14 @@ async function editTask(values) {
   } catch (err) {
     error.value = err.message || "Failed to update task";
   }
+}
+
+function toggleCompletedSwitch(val) {
+  if (!task.value) return;
+  apiFetch(`tasks?id=eq.${route.params.id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ completed: val })
+  }).then(fetchTask);
 }
 </script>
 <style scoped></style>
