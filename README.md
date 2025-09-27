@@ -15,7 +15,7 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 
 ## Tech Stack
 
-- Vue 3 with `<script setup>` SFCs
+- Vue 3 with `<script setup>` composition API
 - Vite for fast development
 - PrimeVue for UI components (Dialog, Dropdown, Paginator, InputSwitch)
 - vee-validate and Yup for form validation
