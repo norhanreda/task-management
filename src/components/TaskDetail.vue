@@ -50,34 +50,42 @@
       >
         <div class="flex flex-col gap-3">
           <Field name="title" v-slot="{ field, errorMessage }">
+            <label class="font-semibold mb-0.5 block" for="title">Title</label>
             <input
               v-bind="field"
+              id="title"
               class="border rounded p-2"
               placeholder="Title"
             />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="description" v-slot="{ field, errorMessage }">
+            <label class="font-semibold mb-0.5 block" for="description">Description</label>
             <textarea
               v-bind="field"
+              id="description"
               class="border rounded p-2"
               placeholder="Description"
             ></textarea>
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="priority" v-slot="{ field, errorMessage, handleChange }">
+            <label class="font-semibold mb-0.5 block" for="priority">Priority</label>
             <Dropdown
               :modelValue="field.value"
               @update:modelValue="handleChange($event)"
               :options="priorityOptions"
+              id="priority"
               placeholder="Priority"
               class="w-full"
             />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="due_date" v-slot="{ field, errorMessage }">
+            <label class="font-semibold mb-0.5 block" for="due_date">Due Date</label>
             <input
               v-bind="field"
+              id="due_date"
               type="date"
               class="border rounded p-2"
               placeholder="Due Date"
@@ -85,15 +93,18 @@
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="completed" v-slot="{ field, errorMessage }">
-            <select v-bind="field" class="border rounded p-2">
+            <label class="font-semibold mb-0.5 block" for="completed">Completed</label>
+            <select v-bind="field" id="completed" class="border rounded p-2">
               <option :value="true">Completed</option>
               <option :value="false">Not Completed</option>
             </select>
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="image_url" v-slot="{ field, errorMessage }">
+            <label class="font-semibold mb-0.5 block" for="image_url">Image URL</label>
             <input
               v-bind="field"
+              id="image_url"
               class="border rounded p-2"
               placeholder="Image URL"
             />
