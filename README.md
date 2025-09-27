@@ -38,7 +38,7 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 	```sh
 	npm run dev
 	```
-3. Open [http://localhost:5173](http://localhost:port) in your browser.
+3. Open [http://localhost:port(http://localhost:port) in your browser.
 
 ## Customization
 
