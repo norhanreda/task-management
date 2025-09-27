@@ -8,27 +8,33 @@
       <Form :validation-schema="taskSchema" @submit="addTask" >
         <div class="flex flex-col gap-3">
           <Field name="title" v-slot="{ field, errorMessage }">
-            <input v-bind="field" v-model="newTask.title" class="border rounded p-2" placeholder="Title" />
+            <label class="font-semibold mb-0.5 block" for="title">Title</label>
+            <input v-bind="field" id="title" class="border rounded p-2" placeholder="Title" />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="description" v-slot="{ field, errorMessage }">
-            <textarea v-bind="field" v-model="newTask.description" class="border rounded p-2" placeholder="Description"></textarea>
+            <label class="font-semibold mb-0.5 block" for="description">Description</label>
+            <textarea v-bind="field" id="description" class="border rounded p-2" placeholder="Description"></textarea>
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="priority" v-slot="{ field, errorMessage }">
-            <Dropdown v-bind="field" v-model="newTask.priority" :options="priorityOptions" optionLabel="label" optionValue="value" placeholder="Priority" class="w-full" />
+            <label class="font-semibold mb-0.5 block" for="priority">Priority</label>
+            <Dropdown v-bind="field" :options="priorityOptions" optionLabel="label" optionValue="value" id="priority" placeholder="Priority" class="w-full" />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="category_id" v-slot="{ field, errorMessage }">
-            <Dropdown v-bind="field" v-model="newTask.category_id" :options="categoryOptions" optionLabel="label" optionValue="value" placeholder="Category" class="w-full" />
+            <label class="font-semibold mb-0.5 block" for="category_id">Category</label>
+            <Dropdown v-bind="field" :options="categoryOptions" optionLabel="label" optionValue="value" id="category_id" placeholder="Category" class="w-full" />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="due_date" v-slot="{ field, errorMessage }">
-            <input v-bind="field" v-model="newTask.due_date" type="date" class="border rounded p-2" placeholder="Due Date" />
+            <label class="font-semibold mb-0.5 block" for="due_date">Due Date</label>
+            <input v-bind="field" id="due_date" type="date" class="border rounded p-2" placeholder="Due Date" />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
           <Field name="image_url" v-slot="{ field, errorMessage }">
-            <input v-bind="field" v-model="newTask.image_url" class="border rounded p-2" placeholder="Image URL" />
+            <label class="font-semibold mb-0.5 block" for="image_url">Image URL</label>
+            <input v-bind="field" id="image_url" class="border rounded p-2" placeholder="Image URL" />
             <span class="text-red-600 text-xs">{{ errorMessage }}</span>
           </Field>
         </div>
@@ -51,8 +57,9 @@ import TaskCard from './TaskCard.vue';
 import Paginator from 'primevue/paginator';
 import Dropdown from 'primevue/dropdown';
 import Dialog from 'primevue/dialog';
-
+import { Form, Field } from "vee-validate";
 import * as yup from 'yup';
+import { value } from "@primeuix/themes/aura/knob";
 
 const router = useRouter();
 
@@ -148,25 +155,26 @@ function goToTaskDetail(id) {
   router.push({ path: `/task/${id}` });
 }
 
-async function addTask() {
+async function addTask(values) {
+  console.log("Form Values:", values);
   try {
     const body = {
-      title: newTask.value.title,
-      description: newTask.value.description,
-      priority: newTask.value.priority,
-      category_id: newTask.value.category_id,
-      due_date: newTask.value.due_date,
-      image_url: newTask.value.image_url
-    }
+      title: values.title,
+      description: values.description,
+      priority: values.priority.value,
+      category_id: values.category_id.value,
+      due_date: values.due_date,
+      image_url: values.image_url
+    };
+    console.log("Request Body:", body);
     await apiFetch('tasks', {
       method: 'POST',
       body: JSON.stringify(body)
-    })
-    showAddDialog.value = false
-    Object.assign(newTask.value, { title: '', description: '', priority: '', category_id: null, due_date: '', image_url: '' })
-    await loadTasks()
+    });
+    showAddDialog.value = false;
+    await loadTasks();
   } catch (err) {
-    error.value = err.message || 'Failed to add task'
+    error.value = err.message || 'Failed to add task';
   }
 }
 
