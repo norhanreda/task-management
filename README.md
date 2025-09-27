@@ -45,3 +45,9 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 - To add new API endpoints, create a new service file in `src/services/` and import it in your components.
 - UI and validation logic can be extended in the component files.
 
+## Deployed project
+
+- https://task-management-sepia-five.vercel.app/
+
+
+
