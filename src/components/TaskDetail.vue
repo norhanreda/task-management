@@ -173,7 +173,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { apiFetch } from "../utils/fetchClient";
+import { fetchTaskById, updateTask } from "../services/taskService";
 import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
 import InputSwitch from "primevue/inputswitch";
@@ -213,7 +213,7 @@ const taskSchema = yup.object({
 
 async function fetchTask() {
   try {
-    const response = await apiFetch(`tasks?id=eq.${route.params.id}`);
+    const response = await fetchTaskById(route.params.id);
     task.value = (response.data || response)[0] || null;
   } catch (err) {
     error.value = err.message || "Failed to load task";
@@ -253,10 +253,7 @@ async function editTask(values) {
     if (values.completed !== undefined) body.completed = values.completed;
     if (values.image_url !== undefined && values.image_url !== "")
       body.image_url = values.image_url;
-    await apiFetch(`tasks?id=eq.${route.params.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(body),
-    });
+    await updateTask(route.params.id, body);
     await fetchTask();
     showEditDialog.value = false;
   } catch (err) {
@@ -266,10 +263,6 @@ async function editTask(values) {
 
 function toggleCompletedSwitch(val) {
   if (!task.value) return;
-  apiFetch(`tasks?id=eq.${route.params.id}`, {
-    method: "PATCH",
-    body: JSON.stringify({ completed: val }),
-  }).then(fetchTask);
+  updateTask(route.params.id, { completed: val }).then(fetchTask);
 }
 </script>
-<style scoped></style>

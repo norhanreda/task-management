@@ -142,7 +142,13 @@
 <script setup>
 import { ref, onMounted, watch, onActivated } from "vue";
 import { useRouter } from "vue-router";
-import { apiFetch, setLoadingCallback } from "../utils/fetchClient";
+import { setLoadingCallback } from "../utils/fetchClient";
+import {
+  fetchTasks,
+  addTask as addTaskApi,
+  deleteTask as deleteTaskApi,
+} from "../services/taskService";
+import { fetchCategories } from "../services/categoryService";
 import TaskCard from "./TaskCard.vue";
 import Paginator from "primevue/paginator";
 import Dropdown from "primevue/dropdown";
@@ -191,8 +197,7 @@ const taskSchema = yup.object({
 
 async function loadCategories() {
   try {
-    const categories = await apiFetch("categories?order=name.asc");
-
+    const categories = await fetchCategories();
     categoryOptions.value = (categories.data || categories).map((cat) => ({
       label: cat.name,
       value: cat.id,
@@ -217,7 +222,7 @@ async function loadTasks() {
       // `priority=eq.${priority.value}`,
       // 'order=created_at.desc'
     ].join("&");
-    const response = await apiFetch(`tasks?${params}`);
+    const response = await fetchTasks(params);
     data.value = response.data || response;
     totalRecords.value = response.count || 100;
     console.log("totalRecords:", totalRecords.value);
@@ -228,7 +233,7 @@ async function loadTasks() {
 
 async function deleteTask(taskId) {
   try {
-    await apiFetch(`tasks?id=eq.${taskId}`, { method: "DELETE" });
+    await deleteTaskApi(taskId);
     await loadTasks();
   } catch (err) {
     error.value = err.message || "Failed to delete task";
@@ -261,10 +266,7 @@ async function addTask(values) {
     if (values.image_url !== undefined && values.image_url !== "")
       body.image_url = values.image_url;
     console.log("Request Body:", body);
-    await apiFetch('tasks', {
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
+    await addTaskApi(body);
 
     if (body.category_id !== undefined) {
       category_id.value = body.category_id;
