@@ -51,7 +51,7 @@ function handleCancel() {
     </div>
 
     <p class="mb-2 text-gray-700">
-      {{ props.task.description.substring(0, 30) }} ...
+      {{ props.task.description?.substring(0, 30) }} ...
     </p>
   </div>
 </template>
