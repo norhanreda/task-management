@@ -1,12 +1,12 @@
 <template>
   <Toast ref="toast" />
-  <h1
-    class="flex items-center justify-center text-2xl p-8 text-blue-900 font-bold"
-  >
-    Task Detail
-  </h1>
+  <div v-if="loading" class="flex flex-col items-center justify-center mt-10">
+    <ProgressSpinner style="width:50px;height:50px" strokeWidth="4" fillColor="#eee" animationDuration="1s" />
+    <span class="mt-4 text-blue-700">Loading...</span>
+  </div>
+  <h1 v-else class="flex items-center justify-center text-2xl p-8 text-blue-900 font-bold">Task Detail</h1>
   <div
-    v-if="task"
+    v-if="task && !loading"
     class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto"
   >
     <button
@@ -169,9 +169,10 @@
     </Dialog>
   </div>
   <div v-else-if="error" class="text-red-600 text-center mt-8">{{ error }}</div>
-  <div v-else class="text-center mt-8">Loading...</div>
+
 </template>
 <script setup>
+import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import { ref as vueRef } from 'vue';
 const toast = vueRef();
@@ -188,6 +189,7 @@ const route = useRoute();
 const router = useRouter();
 
 const task = ref(null);
+const loading = ref(false);
 const error = ref(null);
 const showEditDialog = ref(false);
 const editTaskData = ref({
@@ -216,11 +218,14 @@ const taskSchema = yup.object({
 });
 
 async function fetchTask() {
+  loading.value = true;
   try {
     const response = await fetchTaskById(route.params.id);
     task.value = (response.data || response)[0] || null;
   } catch (err) {
     error.value = err.message || "Failed to load task";
+  } finally {
+    loading.value = false;
   }
 }
 

@@ -1,6 +1,10 @@
 <template>
   <Toast ref="toast" />
-  <div class="flex flex-col gap-5 items-center justify-center mt-10">
+  <div v-if="loading" class="flex flex-col items-center justify-center mt-10">
+    <ProgressSpinner style="width:50px;height:50px" strokeWidth="4" fillColor="#eee" animationDuration="1s" />
+    <span class="mt-4 text-blue-700">Loading...</span>
+  </div>
+  <div v-else class="flex flex-col gap-5 items-center justify-center mt-10">
     <div class="flex gap-6 items-center mb-4">
       <Dropdown
         v-model="category_id"
@@ -141,6 +145,7 @@
 </template>
 
 <script setup>
+import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import { ref as vueRef } from 'vue';
 const toast = vueRef();
