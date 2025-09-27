@@ -27,13 +27,20 @@
     </div>
 
     <div class="flex flex-wrap gap-4 mb-2 mt-4">
-      <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
-        >Priority: {{ task.priority }}</span
+      <span
+        class="px-2 py-1 rounded-full text-xs"
+        :class="{
+          'bg-red-100 text-red-800': task.priority === 'high',
+          'bg-yellow-100 text-yellow-800': task.priority === 'medium',
+          'bg-green-100 text-green-800': task.priority === 'low'
+        }"
       >
-      <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs"
-        >Completed: {{ task.completed ? "Yes" : "No" }}</span
-      >
-      <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs"
+        Priority: {{ task.priority }}
+      </span>
+      <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"
+          :class="task.completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+        >Completed: {{ task.completed ? "Yes" : "No" }}</span>
+      <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs"
         >Due Date: {{ task.due_date }}</span
       >
     </div>
