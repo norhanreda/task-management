@@ -91,9 +91,9 @@ const priorityOptions = [
 const taskSchema = yup.object({
   title: yup.string().required('Title is required').max(255, 'Max 255 characters'),
   description: yup.string().nullable(),
-  priority: yup.object().required('Priority is required'),
+    priority: yup.object().nullable(),
   category_id: yup.object().required('Category is required'),
-  due_date: yup.string().required('Due date is required').matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+    due_date: yup.string().nullable().matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
   image_url: yup.string().max(500, 'Max 500 characters').nullable(),
 });
 
@@ -158,14 +158,13 @@ function goToTaskDetail(id) {
 async function addTask(values) {
   console.log("Form Values:", values);
   try {
-    const body = {
-      title: values.title,
-      description: values.description,
-      priority: values.priority.value,
-      category_id: values.category_id.value,
-      due_date: values.due_date,
-      image_url: values.image_url
-    };
+    const body = {};
+    if (values.title !== undefined) body.title = values.title;
+    if (values.description !== undefined) body.description = values.description;
+    if (values.priority && values.priority.value !== undefined) body.priority = values.priority.value;
+    if (values.category_id && values.category_id.value !== undefined) body.category_id = values.category_id.value;
+    if (values.due_date !== undefined && values.due_date !== "") body.due_date = values.due_date;
+    if (values.image_url !== undefined && values.image_url !== "") body.image_url = values.image_url;
     console.log("Request Body:", body);
     await apiFetch('tasks', {
       method: 'POST',
