@@ -1,4 +1,5 @@
 <template>
+  <Toast ref="toast" />
   <div class="flex flex-col gap-5 items-center justify-center mt-10">
     <div class="flex gap-6 items-center mb-4">
       <Dropdown
@@ -140,6 +141,9 @@
 </template>
 
 <script setup>
+import Toast from 'primevue/toast';
+import { ref as vueRef } from 'vue';
+const toast = vueRef();
 import { ref, onMounted, watch, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import { setLoadingCallback } from "../utils/fetchClient";
@@ -233,10 +237,12 @@ async function loadTasks() {
 
 async function deleteTask(taskId) {
   try {
-    await deleteTaskApi(taskId);
-    await loadTasks();
+  await deleteTaskApi(taskId);
+  toast.value.add({ severity: 'success', summary: 'Task Deleted', detail: 'The task was deleted successfully.', life: 3000 });
+  await loadTasks();
   } catch (err) {
-    error.value = err.message || "Failed to delete task";
+  error.value = err.message || "Failed to delete task";
+  toast.value.add({ severity: 'error', summary: 'Delete Failed', detail: error.value, life: 3000 });
   }
 }
 
@@ -266,15 +272,16 @@ async function addTask(values) {
     if (values.image_url !== undefined && values.image_url !== "")
       body.image_url = values.image_url;
     console.log("Request Body:", body);
-    await addTaskApi(body);
-
+  await addTaskApi(body);
+  toast.value.add({ severity: 'success', summary: 'Task Added', detail: 'The task was added successfully.', life: 3000 });
     if (body.category_id !== undefined) {
       category_id.value = body.category_id;
     }
     showAddDialog.value = false;
     await loadTasks();
   } catch (err) {
-    error.value = err.message || "Failed to add task";
+  error.value = err.message || "Failed to add task";
+  toast.value.add({ severity: 'error', summary: 'Add Failed', detail: error.value, life: 3000 });
   }
 }
 

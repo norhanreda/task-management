@@ -1,4 +1,5 @@
 <template>
+  <Toast ref="toast" />
   <h1
     class="flex items-center justify-center text-2xl p-8 text-blue-900 font-bold"
   >
@@ -171,6 +172,9 @@
   <div v-else class="text-center mt-8">Loading...</div>
 </template>
 <script setup>
+import Toast from 'primevue/toast';
+import { ref as vueRef } from 'vue';
+const toast = vueRef();
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { fetchTaskById, updateTask } from "../services/taskService";
@@ -253,16 +257,26 @@ async function editTask(values) {
     if (values.completed !== undefined) body.completed = values.completed;
     if (values.image_url !== undefined && values.image_url !== "")
       body.image_url = values.image_url;
-    await updateTask(route.params.id, body);
-    await fetchTask();
-    showEditDialog.value = false;
+  await updateTask(route.params.id, body);
+  toast.value.add({ severity: 'success', summary: 'Task Updated', detail: 'The task was updated successfully.', life: 3000 });
+  await fetchTask();
+  showEditDialog.value = false;
   } catch (err) {
-    error.value = err.message || "Failed to update task";
+  error.value = err.message || "Failed to update task";
+  toast.value.add({ severity: 'error', summary: 'Update Failed', detail: error.value, life: 3000 });
   }
 }
 
 function toggleCompletedSwitch(val) {
   if (!task.value) return;
-  updateTask(route.params.id, { completed: val }).then(fetchTask);
+  updateTask(route.params.id, { completed: val })
+    .then(() => {
+      toast.value.add({ severity: 'success', summary: 'Task Updated', detail: 'Completed state updated.', life: 3000 });
+      fetchTask();
+    })
+    .catch((err) => {
+      error.value = err.message || 'Failed to update task';
+      toast.value.add({ severity: 'error', summary: 'Update Failed', detail: error.value, life: 3000 });
+    });
 }
 </script>
