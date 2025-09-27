@@ -41,7 +41,7 @@ export async function apiFetch(endpoint, options = {}) {
       return { success: true }
     }
 
-    // Handle 201 or 200 with empty body
+
     const text = await response.text();
     if (!text) {
       return { success: true }
