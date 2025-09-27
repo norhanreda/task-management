@@ -47,7 +47,7 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 
 ## Deployed project
 
-- https://task-management-sepia-five.vercel.app/
+- [https://task-management-sepia-five.vercel.app/](https://task-management-sepia-five.vercel.app/)
 
 
 
