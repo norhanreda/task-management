@@ -1,7 +1,33 @@
-
 # Task Management App
 
 This is a modern task management application built with Vue 3, Vite, PrimeVue, vee-validate, and Tailwind CSS.
+
+# Architecture & Design Overview
+
+## Framework Choice: Vue vs React
+
+This project uses **Vue 3** for its simplicity, reactivity, and excellent Single File Component (SFC) structure. Vue's `<script setup>` syntax provides a clean and concise way to manage component logic and state. Compared to React, Vue offers:
+- Less boilerplate for component setup
+- Built-in reactivity system without external state libraries
+- Seamless integration with Vite for fast development
+
+I chose Vue because I have strong professional experience with it in my work, which allows me to build robust and maintainable applications efficiently. React is also a strong choice, but Vue was selected for its developer experience and rapid prototyping capabilities in this context.
+
+## State Management Approach
+
+State is managed locally within components using Vue's `ref` and `reactive` APIs. For this app's scale, global state management (like Vuex or Pinia) is not required. Data is fetched from the API and stored in local refs, with props and events used for communication between parent and child components.
+
+## Component Architecture Overview
+
+- **AllTasks.vue**: Main task list, handles add/delete, pagination, and category filtering. Manages dialogs and loading state.
+- **TaskDetail.vue**: Shows details for a single task, supports editing and toggling completion. Uses dialog for editing and displays dynamic badges.
+- **TaskCard.vue**: Displays a single task summary, emits events for delete and navigation.
+- **Service files**: API logic is separated into `src/services/taskService.js` and `src/services/categoryService.js` for clean separation of concerns.
+- **Toast and Spinner**: PrimeVue Toast and ProgressSpinner are used for user feedback and loading indicators.
+
+
+
+
 
 ## Features
 
@@ -23,6 +49,9 @@ This is a modern task management application built with Vue 3, Vite, PrimeVue, v
 - vee-validate and Yup for form validation
 - Tailwind CSS for styling
 - API calls via custom `fetchClient` utility
+
+## Any known limitations
+ I have a simple problem in pagination as the backend is not sending a parameter called totalRecords which is needed for paginator compomemt of prime vue 
 
 ## Project Structure
 
