@@ -1,5 +1,5 @@
 <template>
-  <Toast ref="toast" />
+  <Toast ref="toast" class="max-w-xs w-full sm:max-w-md" style="left:50%;transform:translateX(-50%);" />
   <div v-if="loading" class="flex flex-col items-center justify-center mt-10">
     <ProgressSpinner style="width:50px;height:50px" strokeWidth="4" fillColor="#eee" animationDuration="1s" />
     <span class="mt-4 text-blue-700">Loading...</span>
