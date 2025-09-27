@@ -38,7 +38,7 @@
         </div>
       </Form>
     </Dialog>
-    <TaskCard v-for="task in data" :key="task.id" :task="task" class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white" @delete-task="deleteTask" @click="goToTaskDetail(task.id)" style="cursor:pointer;" />
+  <TaskCard v-for="task in data" :key="task.id" :task="task" class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white" @delete-task="deleteTask" @card-click="goToTaskDetail" style="cursor:pointer;" />
     <Paginator :rows="limit" :totalRecords="totalRecords" :first="offset" @page="onPage" :rowsPerPageOptions="[10,20,50]" class="mt-4" />
   </div>
 </template>
@@ -51,7 +51,7 @@ import TaskCard from './TaskCard.vue';
 import Paginator from 'primevue/paginator';
 import Dropdown from 'primevue/dropdown';
 import Dialog from 'primevue/dialog';
-import { Form, Field } from 'vee-validate';
+
 import * as yup from 'yup';
 
 const router = useRouter();
@@ -121,7 +121,8 @@ async function loadTasks() {
     ].join('&')
     const response = await apiFetch(`tasks?${params}`)
     data.value = response.data || response 
-    totalRecords.value = response.count || 100 
+    totalRecords.value = response.count || 100
+    console.log("totalRecords:", totalRecords.value);
   } catch (err) {
     error.value = err.message || "Failed to load tasks"
   }
@@ -137,6 +138,7 @@ async function deleteTask(taskId) {
 }
 
 function onPage(event) {
+  console.log("Page Event:", event);
   offset.value = event.first
   limit.value = event.rows
   loadTasks()

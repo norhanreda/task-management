@@ -38,7 +38,7 @@ function handleCancel() {
       </div>
     </div>
   </Dialog>
-  <div class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white">
+  <div class="rounded-md shadow-2xl p-5 w-[60%] flex flex-col m-auto bg-white" @click="$emit('card-click', props.task.id)" style="cursor:pointer;">
     <div class="flex items-center justify-between mb-2">
       <h1 class="text-2xl text-blue-900 font-bold">{{ props.task.title }}</h1>
       <button
